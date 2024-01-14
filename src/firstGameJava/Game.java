@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import com.platstudios.entities.Entity;
 import com.platstudios.entities.Player;
 import com.platstudios.graphics.Spritesheet;
+import com.platstudios.world.World;
 
 public class Game extends Canvas implements Runnable, KeyListener{
 	
@@ -31,8 +32,9 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	
 	private BufferedImage image;
 	public List<Entity> entities;
-	public Spritesheet spritesheet;
+	public static Spritesheet spritesheet;
 	Player player;
+	public static World world;
 	
 	public Game() {
 		this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
@@ -40,6 +42,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
 		spritesheet = new Spritesheet("/spritesheet.png");
+		world = new World("/map.png");
 		player = new Player(0, 0, 16, 16, spritesheet.getSpriteSheet(64, 0, 80, 32));
 		entities.add(player);
 		frame.addKeyListener(this);
@@ -81,6 +84,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 		
 		/*Renderização do jogo*/
 		//Graphics2D g2 = (Graphics2D) g;
+		world.render(g);
 		for(Entity e : entities) {
 			e.render(g);
 		}
