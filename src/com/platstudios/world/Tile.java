@@ -7,8 +7,8 @@ import firstGameJava.Game;
 
 public class Tile {
 	
-	public static final BufferedImage TILE_FLOOR = Game.spritesheet.getSpriteSheet(0, 0, 16, 16);
-	public static final BufferedImage TILE_WALL = Game.spritesheet.getSpriteSheet(16, 0, 16, 16);
+	protected static final BufferedImage TILE_FLOOR = Game.spritesheet.getSpriteSheet(0, 0, 16, 16);
+	protected static final BufferedImage TILE_WALL = Game.spritesheet.getSpriteSheet(16, 0, 16, 16);
 	
 	private BufferedImage sprite;
 	private int posX, posY;
@@ -20,6 +20,6 @@ public class Tile {
 	}
 	
 	public void render(Graphics g) {
-		g.drawImage(sprite, this.posX, this.posY, null);
+		g.drawImage(sprite, this.posX - Camera.x, this.posY - Camera.y, null);
 	}
 }

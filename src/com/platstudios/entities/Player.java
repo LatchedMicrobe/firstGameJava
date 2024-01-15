@@ -3,6 +3,11 @@ package com.platstudios.entities;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import com.platstudios.world.Camera;
+import com.platstudios.world.World;
+
+import firstGameJava.Game;
+
 public class Player extends Entity{
 	
 	public boolean moved,up, down, left, right;
@@ -56,14 +61,16 @@ public class Player extends Entity{
 				}
 			}
 		}
+		Camera.x =  Camera.clamp(this.getX() - Game.WIDTH/2, 0, World.WIDTH * 16 - Game.WIDTH);
+		Camera.y = Camera.clamp(this.getY() - Game.HEIGHT/2, 0, World.HEIGHT * 16 - Game.HEIGHT);;
 	}
 	
 	@Override
 	public void render(Graphics surface) {
 		if(lastPos == 1)
-			surface.drawImage(leftPlayer[currAnimation], getX(), getY(), null);
+			surface.drawImage(leftPlayer[currAnimation], getX() - Camera.x, getY() - Camera.y, null);
 		else
-			surface.drawImage(rightPlayer[currAnimation], getX(), getY(), null);
+			surface.drawImage(rightPlayer[currAnimation], getX() - Camera.x, getY() - Camera.y, null);
 			
 			
 	}

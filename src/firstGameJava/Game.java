@@ -26,26 +26,27 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	private Thread thread;
 	private boolean isRunning;
 	
-	private final int WIDTH = 160;
-	private final int HEIGHT = 120;
-	private final int SCALE = 3;
+	public static final int WIDTH = 240;
+	public static final int HEIGHT = 160;
+	public static final int SCALE = 3;
 	
 	private BufferedImage image;
-	public List<Entity> entities;
+	public static List<Entity> entities;
 	public static Spritesheet spritesheet;
-	Player player;
+	private Player player;
 	public static World world;
 	
-	public Game() {
+	public Game() {		
 		this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		this.initframe();
+		frame.addKeyListener(this);		
+		spritesheet = new Spritesheet("/spritesheet.png");
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
-		spritesheet = new Spritesheet("/spritesheet.png");
-		world = new World("/map.png");
 		player = new Player(0, 0, 16, 16, spritesheet.getSpriteSheet(64, 0, 80, 32));
 		entities.add(player);
-		frame.addKeyListener(this);
+		world = new World("/map.png");
+
 	}
 	
 	public void initframe() {

@@ -3,13 +3,24 @@ package com.platstudios.entities;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import com.platstudios.world.Camera;
+
+import firstGameJava.Game;
+
 public class Entity {
+	
+	
+	protected static final BufferedImage LIFEPACK_EN = Game.spritesheet.getSpriteSheet(0,16,16,16);
+	protected static final BufferedImage WEAPON_EN = Game.spritesheet.getSpriteSheet(16,16,16,16);
+	protected static final BufferedImage BULLET_EN = Game.spritesheet.getSpriteSheet(32,16,16,16);
+	protected static final BufferedImage ENEMY_EN = Game.spritesheet.getSpriteSheet(48,16,16,16);
+	
 	
 	private int x;
 	private int y;
 	private int width;
 	private int height;
-	protected BufferedImage sprite;
+	private BufferedImage sprite;
 	
 	public Entity(int x, int y, int width, int height, BufferedImage sprite) {
 		this.x = x;
@@ -46,6 +57,6 @@ public class Entity {
 		
 	}
 	public void render(Graphics surface) {
-		surface.drawImage(sprite, this.x, this.y, null);
+		surface.drawImage(sprite, this.x -Camera.x, this.y-Camera.y, null);
 	}
 }
