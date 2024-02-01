@@ -14,13 +14,25 @@ public class World {
 	
 	public static int WIDTH;
 	public static int HEIGHT;
-	private Tile tiles[];
+	public static final int TILE_SIZE = 16; 
+	public static Tile tiles[];
+	
+	public BufferedImage firstEnemy[];
+	
+	private Enemy enemyAdded;
+	
 	
 	public World(String path) {
 		
 		try {
 			
 			BufferedImage mapSprite = ImageIO.read(getClass().getResource(path));
+			firstEnemy = new BufferedImage[3];
+			
+			for(int index = 0; index < firstEnemy.length; index++) {
+				firstEnemy[index] = Game.spritesheet.getSpriteSheet(48, (index + 1) * 16, TILE_SIZE, TILE_SIZE);
+			}
+			
 			WIDTH = mapSprite.getWidth();
 			HEIGHT = mapSprite.getHeight();
 			
@@ -40,8 +52,8 @@ public class World {
 							tiles[x_index + y_index * WIDTH] = new WallTile(x_index * 16, y_index * 16);
 							break;
 						case 0xFF0026FF:
-							Game.entities.get(0).setX(x_index * 16);
-							Game.entities.get(0).setY(y_index * 16);
+							Game.player.setX(x_index * 16);
+							Game.player.setY(y_index * 16);
 							break;
 						case 0xFF404040:
 							Game.entities.add(new Weapon(x_index * 16, y_index * 16, 16, 16));
@@ -51,9 +63,12 @@ public class World {
 							break;
 						case 0xFF00FF21:
 							Game.entities.add(new LifePack(x_index * 16, y_index * 16, 16, 16));
+							
 							break;
 						case 0xFFFF0000:
-							Game.entities.add(new Enemy(x_index * 16, y_index * 16, 16, 16));
+							this.enemyAdded = new Enemy(x_index * 16, y_index * 16, 16, 16, 5,firstEnemy);
+							Game.entities.add(this.enemyAdded);
+							Game.enemies.add(this.enemyAdded);
 							break;
 					}
 				}
@@ -67,6 +82,26 @@ public class World {
 		
 	}
 	
+	public static boolean isFree(int xNext, int yNext) {
+		int x1 = xNext / TILE_SIZE;
+		int y1 = yNext / TILE_SIZE;
+		
+		int x2 = (xNext + TILE_SIZE - 1) / TILE_SIZE;
+		int y2 = yNext / TILE_SIZE;
+		
+		int x3 = xNext / TILE_SIZE;
+		int y3 = (yNext + TILE_SIZE - 1) / TILE_SIZE;
+		
+		int x4 = (xNext + TILE_SIZE - 1) / TILE_SIZE;
+		int y4 = (yNext + TILE_SIZE - 1) / TILE_SIZE;
+		
+		return !(tiles[x1 + y1 * WIDTH] instanceof WallTile ||
+				tiles[x2 + y2 * WIDTH] instanceof WallTile ||
+				tiles[x3 + y3 * WIDTH] instanceof WallTile ||
+				tiles[x4 + y4 * WIDTH] instanceof WallTile);
+				
+				
+	}
 	public void render(Graphics g) {
 		Tile tile;
 		int xStart = (Camera.x >> 4);
